@@ -5,7 +5,7 @@
     "dockerfilePath": "Dockerfile",
     "buildArgs": {
       "VITE_API_URL": "https://openwa-production-8a86.up.railway.app",
-      "VITE_WS_URL": "https://openwa-production-8a86.up.railway.app",
+      "VITE_WS_URL": "https://openwa-production-8a86.up.railway.app"
     }
   },
   "deploy": {
