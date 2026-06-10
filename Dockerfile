@@ -2,27 +2,21 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy source code
 COPY . .
-
-# Build the app
 RUN npm run build
 
-# Production stage with nginx
-FROM nginx:alpine
+# Production stage - serve with node
+FROM node:20-alpine
 
-# Copy built files
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Copy nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN npm install -g serve
 
-EXPOSE 80
+COPY --from=builder /app/dist ./dist
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD serve dist -s -l ${PORT:-3000}
